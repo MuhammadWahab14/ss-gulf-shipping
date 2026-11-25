@@ -5,7 +5,7 @@ const path = require('path');
 /* ---------------- Site data (content from ssgulfshipping.com) ---------------- */
 const SITE = 'SS Gulf Shipping';
 const PHONE_PT = { show: '+351 920 630 874', tel: '+351920630874' };
-const PHONE_PK = { show: '+92 317 2959332', tel: '+923172959332' };
+const PHONE_PK = { show: '+92 312 2829789', tel: '+923122829789' };
 const EMAILS = ['sos@ssgulfshipping.com', 'mhi@ssgulfshipping.com', 'syedfahad@ssgulfshipping.com'];
 const HOURS = 'Mon – Sat: 09 am – 06 pm';
 
