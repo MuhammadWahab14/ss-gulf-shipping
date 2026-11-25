@@ -740,3 +740,7 @@ html:not(.js) .cue,.reduce .cue{display:none}
 .vlabel--hq::after{background:#f6d791}
 .vlabel.is-sel{border-color:#ffd27a;box-shadow:0 0 0 2px rgba(255,210,122,.25)}
 @media (max-width:600px){.vlabel{height:21px;font-size:9px;padding:0 9px 0 6px;gap:6px}.vlabel img{width:15px;height:11px}}
+
+.tiles{grid-template-columns:repeat(4,1fr)}
+@media (max-width:1180px){.tiles{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.tiles{grid-template-columns:1fr}}

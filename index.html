@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SS Gulf Shipping — Moving your cargo with confidence</title>
-<meta name="description" content="Freight forwarding, NVOCC, trucking and container trading from Karachi and Lisbon. Efficient cargo handling, transparent operations and on-time delivery.">
+<meta name="description" content="Freight forwarding, NVOCC, trucking and container trading from Karachi, Lisbon and Dubai. Efficient cargo handling, transparent operations and on-time delivery.">
 <meta name="theme-color" content="#06111F">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SS Gulf Shipping">
 <meta property="og:title" content="SS Gulf Shipping — Moving your cargo with confidence">
-<meta property="og:description" content="Freight forwarding, NVOCC, trucking and container trading from Karachi and Lisbon. Efficient cargo handling, transparent operations and on-time delivery.">
+<meta property="og:description" content="Freight forwarding, NVOCC, trucking and container trading from Karachi, Lisbon and Dubai. Efficient cargo handling, transparent operations and on-time delivery.">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
 <script>(function(r){r.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('reduce')})(document.documentElement)</script>
 <link rel="stylesheet" href="assets/css/styles.css">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SS Gulf Shipping","url":"https://ssgulfshipping.com/","email":"sos@ssgulfshipping.com","telephone":"+351920630874","address":[{"@type":"PostalAddress","addressLocality":"Karachi","addressCountry":"PK"},{"@type":"PostalAddress","addressLocality":"Lisbon","addressCountry":"PT"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SS Gulf Shipping","url":"https://ssgulfshipping.com/","email":"sos@ssgulfshipping.com","telephone":"+351920630874","address":[{"@type":"PostalAddress","addressLocality":"Karachi","addressCountry":"PK"},{"@type":"PostalAddress","addressLocality":"Lisbon","addressCountry":"PT"},{"@type":"PostalAddress","addressLocality":"Dubai","addressCountry":"AE"}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -68,7 +68,7 @@
     <div class="stage">
       <div class="wrap">
         <div class="hero-copy">
-          <span class="eyebrow">Karachi &nbsp;·&nbsp; Lisbon &nbsp;·&nbsp; Global freight</span>
+          <span class="eyebrow">Karachi &nbsp;·&nbsp; Lisbon &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Global freight</span>
           <h1 class="display">Moving your cargo with <em>confidence.</em></h1>
           <p class="lead">Reliable freight forwarding and logistics across regional and international markets. Efficient cargo handling, transparent operations and on-time delivery from origin to destination.</p>
           <div class="actions">
@@ -121,7 +121,7 @@
       </article>
       <div class="bt bt--stat bt--orange rv" style="--d:.06s"><b><span data-count="10">10</span></b><span>Ports &amp; regions served</span></div>
       <div class="bt bt--stat bt--navy rv" style="--d:.12s"><b><span data-count="2">2</span><sup>+</sup></b><span>Years of experience</span></div>
-      <div class="bt bt--stat bt--w6 bt--line rv" style="--d:.18s"><b><span data-count="2">2</span></b><span>Offices: Karachi &amp; Lisbon</span></div>
+      <div class="bt bt--stat bt--w6 bt--line rv" style="--d:.18s"><b><span data-count="3">3</span></b><span>Offices: Karachi, Lisbon &amp; Dubai</span></div>
       <div class="bt bt--stat bt--w6 bt--ink rv" style="--d:.24s"><b><span data-count="4">4</span></b><span>Core services</span></div>
     </div>
   </div>
@@ -254,6 +254,7 @@
         <ul class="fcontact">
           <li><svg class="i " aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span><b>Karachi, Pakistan</b><a href="tel:+923172959332">+92 317 2959332</a></span></li>
           <li><svg class="i " aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span><b>Lisbon, Portugal</b><a href="tel:+351920630874">+351 920 630 874</a></span></li>
+          <li><svg class="i " aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span><b>Dubai, UAE</b><a href="mailto:sos@ssgulfshipping.com">Reach us by email</a></span></li>
           <li><svg class="i " aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span><a href="mailto:sos@ssgulfshipping.com">sos@ssgulfshipping.com</a><br><a href="mailto:mhi@ssgulfshipping.com">mhi@ssgulfshipping.com</a><br><a href="mailto:syedfahad@ssgulfshipping.com">syedfahad@ssgulfshipping.com</a></span></li>
           <li><svg class="i " aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Mon – Sat: 09 am – 06 pm</span></li>
         </ul>
@@ -917,7 +918,7 @@ async function init() {
     const arc = (a, b, hex, lift) => { const m = new THREE.LineBasicMaterial({ color: hex, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }); g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(arcPts(a, b, lift, 56)), m)); baseArcs.push(m); };
     if (offices) {
       PORTS.forEach(([n, la, lo]) => pin(n, la, lo, 0x35d0e8, 0.1));
-      const k = pin('Karachi (office)', 24.86, 67.0, 0xf2c14e, 0.2), l = pin("Lisbon (office)", 38.72, -9.14, 0xf2c14e, 0.2); arc(l, k, 0xe0b45a, 0.14);
+      const k = pin('Karachi (office)', 24.86, 67.0, 0xf2c14e, 0.2), l = pin("Lisbon (office)", 38.72, -9.14, 0xf2c14e, 0.2), d = pin('Dubai (office)', 25.2, 55.27, 0xf2c14e, 0.2); arc(l, k, 0xe0b45a, 0.14); arc(l, d, 0xe0b45a, 0.12);
     } else {
       const hub = ll(24.86, 67.0); PORTS.forEach(([n, la, lo], i) => { const p = pin(n, la, lo, i === 0 ? 0xf2c14e : 0x35d0e8, i === 0 ? 0.18 : 0.1); if (i) arc(hub, p, 0xe0b45a, 0.12); });
     }
@@ -940,7 +941,7 @@ async function init() {
         api.focus = a.p.clone().add(b.p).normalize(); return api.focus;
       }
     };
-    const LBL = offices ? { 'Karachi (office)': ['pk', 'Karachi'], 'Lisbon (office)': ['pt', 'Lisbon'] } : { Karachi: ['pk', 'Karachi \u00b7 Office', 1], 'Jebel Ali': ['ae', 'Jebel Ali'], Sohar: ['om', 'Sohar'], Hamburg: ['de', 'Hamburg'], 'All over Europe': ['eu', 'All over Europe'], 'Nhava Sheva': ['in', 'Nhava Sheva'], 'Laem Chabang': ['th', 'Laem Chabang'], Chittagong: ['bd', 'Chittagong'], Haiphong: ['vn', 'Haiphong'], Bangkok: ['th', 'Bangkok'], Mundra: ['in', 'Mundra'] };
+    const LBL = offices ? { 'Karachi (office)': ['pk', 'Karachi'], 'Lisbon (office)': ['pt', 'Lisbon'], 'Dubai (office)': ['ae', 'Dubai'] } : { Karachi: ['pk', 'Karachi \u00b7 Office', 1], 'Jebel Ali': ['ae', 'Jebel Ali'], Sohar: ['om', 'Sohar'], Hamburg: ['de', 'Hamburg'], 'All over Europe': ['eu', 'All over Europe'], 'Nhava Sheva': ['in', 'Nhava Sheva'], 'Laem Chabang': ['th', 'Laem Chabang'], Chittagong: ['bd', 'Chittagong'], Haiphong: ['vn', 'Haiphong'], Bangkok: ['th', 'Bangkok'], Mundra: ['in', 'Mundra'] };
     api.labels = Object.keys(LBL).map((n) => ({ pin: pins.find((x) => x.name === n), cc: LBL[n][0], text: LBL[n][1], hq: !!LBL[n][2] })).filter((x) => x.pin);
     g.userData.api = api;
     g.rotation.y = offices ? -0.1 : -0.55;

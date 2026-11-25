@@ -140,6 +140,7 @@ function footer() {
         <ul class="fcontact">
           <li>${ic('pin')}<span><b>Karachi, Pakistan</b><a href="tel:${PHONE_PK.tel}">${PHONE_PK.show}</a></span></li>
           <li>${ic('pin')}<span><b>Lisbon, Portugal</b><a href="tel:${PHONE_PT.tel}">${PHONE_PT.show}</a></span></li>
+          <li>${ic('pin')}<span><b>Dubai, UAE</b><a href="mailto:${EMAILS[0]}">Reach us by email</a></span></li>
           <li>${ic('mail')}<span>${EMAILS.map(e => `<a href="mailto:${e}">${e}</a>`).join('<br>')}</span></li>
           <li>${ic('clock')}<span>${HOURS}</span></li>
         </ul>
@@ -242,11 +243,11 @@ const chapters = [
 page({
   file: 'index.html', inner: false, three: true, viewers: true,
   title: 'SS Gulf Shipping — Moving your cargo with confidence',
-  desc: 'Freight forwarding, NVOCC, trucking and container trading from Karachi and Lisbon. Efficient cargo handling, transparent operations and on-time delivery.',
+  desc: 'Freight forwarding, NVOCC, trucking and container trading from Karachi, Lisbon and Dubai. Efficient cargo handling, transparent operations and on-time delivery.',
   jsonld: JSON.stringify({
     '@context': 'https://schema.org', '@type': 'Organization', name: SITE, url: 'https://ssgulfshipping.com/',
     email: EMAILS[0], telephone: PHONE_PT.tel,
-    address: [{ '@type': 'PostalAddress', addressLocality: 'Karachi', addressCountry: 'PK' }, { '@type': 'PostalAddress', addressLocality: 'Lisbon', addressCountry: 'PT' }]
+    address: [{ '@type': 'PostalAddress', addressLocality: 'Karachi', addressCountry: 'PK' }, { '@type': 'PostalAddress', addressLocality: 'Lisbon', addressCountry: 'PT' }, { '@type': 'PostalAddress', addressLocality: 'Dubai', addressCountry: 'AE' }]
   }),
   body: `
 <section class="track" data-story aria-label="Our services, scroll to explore">
@@ -260,7 +261,7 @@ page({
     <div class="stage">
       <div class="wrap">
         <div class="hero-copy">
-          <span class="eyebrow">Karachi &nbsp;·&nbsp; Lisbon &nbsp;·&nbsp; Global freight</span>
+          <span class="eyebrow">Karachi &nbsp;·&nbsp; Lisbon &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Global freight</span>
           <h1 class="display">Moving your cargo with <em>confidence.</em></h1>
           <p class="lead">Reliable freight forwarding and logistics across regional and international markets. Efficient cargo handling, transparent operations and on-time delivery from origin to destination.</p>
           <div class="actions">
@@ -295,7 +296,7 @@ page({
       </article>
       <div class="bt bt--stat bt--orange rv" style="--d:.06s"><b><span data-count="10">10</span></b><span>Ports &amp; regions served</span></div>
       <div class="bt bt--stat bt--navy rv" style="--d:.12s"><b><span data-count="2">2</span><sup>+</sup></b><span>Years of experience</span></div>
-      <div class="bt bt--stat bt--w6 bt--line rv" style="--d:.18s"><b><span data-count="2">2</span></b><span>Offices: Karachi &amp; Lisbon</span></div>
+      <div class="bt bt--stat bt--w6 bt--line rv" style="--d:.18s"><b><span data-count="3">3</span></b><span>Offices: Karachi, Lisbon &amp; Dubai</span></div>
       <div class="bt bt--stat bt--w6 bt--ink rv" style="--d:.24s"><b><span data-count="4">4</span></b><span>Core services</span></div>
     </div>
   </div>
@@ -496,7 +497,7 @@ const mapLink = q => `https://www.google.com/maps/search/?api=1&amp;query=${enco
 page({
   file: 'contact.html', three: true, viewers: true,
   title: 'Contact us — SS Gulf Shipping',
-  desc: 'Contact SS Gulf Shipping in Karachi or Lisbon for freight forwarding, NVOCC, trucking and container trading quotes.',
+  desc: 'Contact SS Gulf Shipping in Karachi, Lisbon or Dubai for freight forwarding, NVOCC, trucking and container trading quotes.',
   body: `
 ${pageHero({ img: 'night.webp', h1: 'Contact us', crumb: 'Contact us', view: 'yard', tod: 0.78 })}
 
@@ -519,6 +520,11 @@ ${pageHero({ img: 'night.webp', h1: 'Contact us', crumb: 'Contact us', view: 'ya
         <li><a href="${mapLink('Lisbon, Portugal')}" target="_blank" rel="noopener">${ic('arrow')}View on map</a></li></ul>
       </div>
       <div class="office rv" style="--d:.16s">
+        <h3>${ic('pin')}Dubai, UAE</h3>
+        <ul><li><a href="mailto:${EMAILS[0]}">${ic('mail')}Reach us by email</a></li><li class="clock">${ic('clock')}Local time <b data-tz="Asia/Dubai">--:--</b></li>
+        <li><a href="${mapLink('Dubai, UAE')}" target="_blank" rel="noopener">${ic('arrow')}View on map</a></li></ul>
+      </div>
+      <div class="office rv" style="--d:.24s">
         <h3>${ic('mail')}Email</h3>
         <ul>${EMAILS.map(e => `<li class="row2"><a href="mailto:${e}">${e}</a><button type="button" class="copy" data-copy="${e}" aria-label="Copy ${e}">Copy</button></li>`).join('')}</ul>
       </div>
@@ -547,7 +553,7 @@ ${pageHero({ img: 'night.webp', h1: 'Contact us', crumb: 'Contact us', view: 'ya
       </form>
 
       <aside class="contact2__aside rv" style="--d:.1s" aria-label="Our offices">
-        <div class="viewer viewer--offices" data-viewer="globe-offices" role="group" aria-label="Interactive 3D globe linking our offices in Karachi and Lisbon. Drag or use the arrow keys to rotate."><span class="vcap">Karachi <b>⇄</b> Lisbon</span></div>
+        <div class="viewer viewer--offices" data-viewer="globe-offices" role="group" aria-label="Interactive 3D globe linking our offices in Karachi, Lisbon and Dubai. Drag or use the arrow keys to rotate."><span class="vcap">Karachi <b>⇄</b> Lisbon <b>⇄</b> Dubai</span></div>
         <p class="hours-card">${ic('clock')}<span>${HOURS}</span></p>
       </aside>
     </div>
@@ -573,7 +579,7 @@ ${legalHead('Privacy Policy', 'Privacy Policy', 'ship', 0.55)}
 ${legalLayout(`
   <p class="upd">Last updated: 23 November 2026</p>
   <h2>Who we are</h2>
-  <p>${SITE} (“we”, “us”) is a freight forwarding and logistics company with offices in Karachi, Pakistan and Lisbon, Portugal. You can reach us at <a href="mailto:${EMAILS[0]}">${EMAILS[0]}</a>.</p>
+  <p>${SITE} (“we”, “us”) is a freight forwarding and logistics company with offices in Karachi, Pakistan; Lisbon, Portugal; and Dubai, UAE. You can reach us at <a href="mailto:${EMAILS[0]}">${EMAILS[0]}</a>.</p>
   <h2>What we collect</h2>
   <p>When you contact us through this website, by email or by phone, we collect the details you give us: your name, email address, phone number, the service you are interested in, and the content of your message, including shipment details.</p>
   <h2>How we use it</h2>

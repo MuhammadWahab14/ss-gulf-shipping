@@ -145,7 +145,7 @@ async function init() {
     const arc = (a, b, hex, lift) => { const m = new THREE.LineBasicMaterial({ color: hex, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }); g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(arcPts(a, b, lift, 56)), m)); baseArcs.push(m); };
     if (offices) {
       PORTS.forEach(([n, la, lo]) => pin(n, la, lo, 0x35d0e8, 0.1));
-      const k = pin('Karachi (office)', 24.86, 67.0, 0xf2c14e, 0.2), l = pin("Lisbon (office)", 38.72, -9.14, 0xf2c14e, 0.2); arc(l, k, 0xe0b45a, 0.14);
+      const k = pin('Karachi (office)', 24.86, 67.0, 0xf2c14e, 0.2), l = pin("Lisbon (office)", 38.72, -9.14, 0xf2c14e, 0.2), d = pin('Dubai (office)', 25.2, 55.27, 0xf2c14e, 0.2); arc(l, k, 0xe0b45a, 0.14); arc(l, d, 0xe0b45a, 0.12);
     } else {
       const hub = ll(24.86, 67.0); PORTS.forEach(([n, la, lo], i) => { const p = pin(n, la, lo, i === 0 ? 0xf2c14e : 0x35d0e8, i === 0 ? 0.18 : 0.1); if (i) arc(hub, p, 0xe0b45a, 0.12); });
     }
@@ -168,7 +168,7 @@ async function init() {
         api.focus = a.p.clone().add(b.p).normalize(); return api.focus;
       }
     };
-    const LBL = offices ? { 'Karachi (office)': ['pk', 'Karachi'], 'Lisbon (office)': ['pt', 'Lisbon'] } : { Karachi: ['pk', 'Karachi \u00b7 Office', 1], 'Jebel Ali': ['ae', 'Jebel Ali'], Sohar: ['om', 'Sohar'], Hamburg: ['de', 'Hamburg'], 'All over Europe': ['eu', 'All over Europe'], 'Nhava Sheva': ['in', 'Nhava Sheva'], 'Laem Chabang': ['th', 'Laem Chabang'], Chittagong: ['bd', 'Chittagong'], Haiphong: ['vn', 'Haiphong'], Bangkok: ['th', 'Bangkok'], Mundra: ['in', 'Mundra'] };
+    const LBL = offices ? { 'Karachi (office)': ['pk', 'Karachi'], 'Lisbon (office)': ['pt', 'Lisbon'], 'Dubai (office)': ['ae', 'Dubai'] } : { Karachi: ['pk', 'Karachi \u00b7 Office', 1], 'Jebel Ali': ['ae', 'Jebel Ali'], Sohar: ['om', 'Sohar'], Hamburg: ['de', 'Hamburg'], 'All over Europe': ['eu', 'All over Europe'], 'Nhava Sheva': ['in', 'Nhava Sheva'], 'Laem Chabang': ['th', 'Laem Chabang'], Chittagong: ['bd', 'Chittagong'], Haiphong: ['vn', 'Haiphong'], Bangkok: ['th', 'Bangkok'], Mundra: ['in', 'Mundra'] };
     api.labels = Object.keys(LBL).map((n) => ({ pin: pins.find((x) => x.name === n), cc: LBL[n][0], text: LBL[n][1], hq: !!LBL[n][2] })).filter((x) => x.pin);
     g.userData.api = api;
     g.rotation.y = offices ? -0.1 : -0.55;
