@@ -36,6 +36,12 @@ async function boot() {
   renderer.setPixelRatio(pixelRatio);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   if (!LOW) { renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; }
+  let composer = null, PP = null;
+  if (!LOW) {
+    try {
+      PP = await Promise.all([import('three/addons/postprocessing/EffectComposer.js'), import('three/addons/postprocessing/RenderPass.js'), import('three/addons/postprocessing/UnrealBloomPass.js'), import('three/addons/postprocessing/ShaderPass.js'), import('three/addons/postprocessing/OutputPass.js')]);
+    } catch (e) { PP = null; }
+  }
 
   // brand font for container decals (don't block long if the font CDN is slow)
   try { await Promise.race([document.fonts.load('800 110px "Exo 2"'), sleep(1200)]); } catch (e) { /* fall back to system font */ }
@@ -47,13 +53,22 @@ async function boot() {
 
   const skyU = {
     top: { value: new THREE.Color() }, mid: { value: new THREE.Color() }, hor: { value: new THREE.Color() },
-    sunCol: { value: new THREE.Color() }, sunDir: { value: new THREE.Vector3(0.95, 0.1, -0.3).normalize() }
+    sunCol: { value: new THREE.Color() }, sunDir: { value: new THREE.Vector3(0.95, 0.1, -0.3).normalize() }, uT: { value: 0 }
   };
-  const SKY_FRAG = `uniform vec3 top,mid,hor,sunCol,sunDir; varying vec3 vDir;
+  const SKY_FRAG = `uniform vec3 top,mid,hor,sunCol,sunDir; uniform float uT; varying vec3 vDir;
+    float sh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+    float sn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(sh(i),sh(i+vec2(1.0,0.0)),f.x),mix(sh(i+vec2(0.0,1.0)),sh(i+vec2(1.0,1.0)),f.x),f.y);}
+    float fbm(vec2 p){float a=0.5,v=0.0;for(int i=0;i<5;i++){v+=a*sn(p);p=p*2.03+vec2(17.0,9.0);a*=0.5;}return v;}
     void main(){ vec3 d=normalize(vDir); float h=d.y;
       vec3 col=mix(hor,mid,smoothstep(0.0,0.22,h)); col=mix(col,top,smoothstep(0.18,0.8,h));
       float sd=max(dot(d,normalize(sunDir)),0.0);
       col+=sunCol*(pow(sd,48.0)*0.8+pow(sd,5.0)*0.22+smoothstep(0.9994,0.9999,sd)*2.0);
+      float hs=smoothstep(0.015,0.3,h);
+      vec2 cp=d.xz/(h+0.2)*0.85+vec2(uT*0.006,uT*0.002);
+      float cl=fbm(cp); float cov=smoothstep(0.5,0.8,cl)*hs; float thin=smoothstep(0.36,0.62,fbm(cp*1.7+5.0))*0.35*hs;
+      float lit=pow(sd,2.0)*0.75+0.12;
+      vec3 cc=mix(mid*0.5+top*0.2,sunCol*1.15+hor*0.55,clamp(lit+(1.0-cl)*0.35,0.0,1.0));
+      col=mix(col,cc,clamp(cov*0.8+thin,0.0,0.9));
       col=mix(col,hor*0.55,1.0-smoothstep(-0.12,0.0,h));
       gl_FragColor=vec4(col,1.0);
       #include <tonemapping_fragment>
@@ -495,7 +510,7 @@ async function boot() {
     } else truck.visible = false;
     const blink = 0.55 + 0.45 * Math.sin(state.t * 3.2);
     glows.forEach((g) => { /* slow breathing on every light */ g.m.opacity *= 0.88 + 0.12 * blink; });
-    sky.position.copy(camera.position);
+    sky.position.copy(camera.position); skyU.uT.value = state.t;
     setCamera(state.t);
   }
 
@@ -503,19 +518,31 @@ async function boot() {
   function resize() {
     const w = host.clientWidth || innerWidth, h = host.clientHeight || innerHeight;
     renderer.setSize(w, h, false);
+    if (composer) { composer.setPixelRatio(pixelRatio); composer.setSize(w, h); }
     camera.aspect = w / h; camera.fov = w / h < 1 ? 64 : 42; camera.updateProjectionMatrix();
+  }
+  if (PP) {
+    try {
+      const [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { ShaderPass }, { OutputPass }] = PP;
+      composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: 4 }));
+      composer.addPass(new RenderPass(scene, camera));
+      composer.addPass(new UnrealBloomPass(new THREE.Vector2(256, 256), 0.3, 0.6, 0.92));
+      composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } }, vertexShader: 'varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }', fragmentShader: 'uniform sampler2D tDiffuse; varying vec2 vUv; void main(){ vec2 c=vUv-0.5; vec2 o=c*dot(c,c)*0.014; gl_FragColor=vec4(texture2D(tDiffuse,vUv+o).r,texture2D(tDiffuse,vUv).g,texture2D(tDiffuse,vUv-o).b,1.0); }' }));
+      composer.addPass(new OutputPass());
+    } catch (e) { composer = null; }
   }
   resize(); new ResizeObserver(() => { resize(); if (reduce) draw(); }).observe(host);
 
   let raf = 0, visible = true, last = performance.now(), frames = 0, acc = 0, ready = false, dead = false;
-  function draw() { update(0); renderer.render(scene, camera); }
+  function paint() { if (composer) { try { composer.render(); return; } catch (e) { composer = null; } } renderer.render(scene, camera); }
+  function draw() { update(0); paint(); }
   function reveal() { if (ready) return; ready = true; host.classList.add('is-3d'); }
   function frame(now) {
     raf = requestAnimationFrame(frame);
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    update(dt); renderer.render(scene, camera);
+    update(dt); paint();
     if (!ready && ++frames > 2) reveal();
-    if (frames > 8 && frames <= 100) { acc += dt; if (frames === 100) { const avg = acc / 92; if (avg > 0.034 && renderer.shadowMap.enabled) { renderer.shadowMap.enabled = false; sun.castShadow = false; scene.traverse((o) => { if (o.material) o.material.needsUpdate = true; }); } if (avg > 0.026 && pixelRatio > 1) { pixelRatio = 1; renderer.setPixelRatio(1); resize(); } else if (avg > 0.034 && pixelRatio > 0.75) { pixelRatio = 0.75; renderer.setPixelRatio(0.75); resize(); } } }
+    if (frames > 8 && frames <= 100) { acc += dt; if (frames === 100) { const avg = acc / 92; if (avg > 0.034 && renderer.shadowMap.enabled) { renderer.shadowMap.enabled = false; sun.castShadow = false; scene.traverse((o) => { if (o.material) o.material.needsUpdate = true; }); } if (avg > 0.05 && composer) composer = null; if (avg > 0.026 && pixelRatio > 1) { pixelRatio = 1; renderer.setPixelRatio(1); resize(); } else if (avg > 0.034 && pixelRatio > 0.75) { pixelRatio = 0.75; renderer.setPixelRatio(0.75); resize(); } } }
   }
   const start = () => { if (!raf && !dead && !reduce) { last = performance.now(); raf = requestAnimationFrame(frame); } };
   const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
