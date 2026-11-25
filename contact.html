@@ -776,7 +776,7 @@ async function init() {
     return g;
   }
 
-  const PORTS = [['Karachi', 24.86, 67.0], ['Jebel Ali', 25.0, 55.06], ['China', 22.5, 114.1], ['Nhava Sheva', 18.95, 72.95], ['Mundra', 22.74, 69.7], ['Colombo', 6.95, 79.85], ['Haiphong', 20.85, 106.7], ['Sokhna', 29.6, 32.35], ['Port Klang', 3.0, 101.4], ['Mombasa', -4.05, 39.67], ['Chittagong', 22.33, 91.8], ['Bangkok', 13.7, 100.5]];
+  const PORTS = [['Karachi', 24.86, 67.0], ['Jebel Ali', 25.0, 55.06], ['Sohar', 24.37, 56.73], ['Mundra', 22.74, 69.7], ['Nhava Sheva', 18.95, 72.95], ['Chittagong', 22.33, 91.8], ['Hamburg', 53.55, 9.99], ['All over Europe', 47.5, 14.5], ['Laem Chabang', 13.08, 100.88], ['Bangkok', 13.7, 100.5], ['Haiphong', 20.85, 106.7]];
   function buildGlobe(mode) {
     const g = new THREE.Group(), R = 2, offices = mode === 'offices', LON_C = offices ? 29 : 75;
     const ll = (lat, lon, r = R) => { const la = lat * Math.PI / 180, th = (lon - LON_C) * Math.PI / 180; return V(r * Math.cos(la) * Math.sin(th), r * Math.sin(la), r * Math.cos(la) * Math.cos(th)); };
@@ -825,7 +825,7 @@ async function init() {
         api.focus = a.p.clone().add(b.p).normalize(); return api.focus;
       }
     };
-    const LBL = offices ? { 'Karachi (office)': ['pk', 'Karachi'], 'Lisbon (office)': ['pt', 'Lisbon'] } : { Karachi: ['pk', 'Karachi \u00b7 Office', 1], 'Jebel Ali': ['ae', 'Jebel Ali'], China: ['cn', 'China'], 'Nhava Sheva': ['in', 'Nhava Sheva'], Colombo: ['lk', 'Colombo'], 'Port Klang': ['my', 'Port Klang'], Sokhna: ['eg', 'Sokhna'], Mombasa: ['ke', 'Mombasa'], Haiphong: ['vn', 'Haiphong'], Chittagong: ['bd', 'Chittagong'], Bangkok: ['th', 'Bangkok'], Mundra: ['in', 'Mundra'] };
+    const LBL = offices ? { 'Karachi (office)': ['pk', 'Karachi'], 'Lisbon (office)': ['pt', 'Lisbon'] } : { Karachi: ['pk', 'Karachi \u00b7 Office', 1], 'Jebel Ali': ['ae', 'Jebel Ali'], Sohar: ['om', 'Sohar'], Hamburg: ['de', 'Hamburg'], 'All over Europe': ['eu', 'All over Europe'], 'Nhava Sheva': ['in', 'Nhava Sheva'], 'Laem Chabang': ['th', 'Laem Chabang'], Chittagong: ['bd', 'Chittagong'], Haiphong: ['vn', 'Haiphong'], Bangkok: ['th', 'Bangkok'], Mundra: ['in', 'Mundra'] };
     api.labels = Object.keys(LBL).map((n) => ({ pin: pins.find((x) => x.name === n), cc: LBL[n][0], text: LBL[n][1], hq: !!LBL[n][2] })).filter((x) => x.pin);
     g.userData.api = api;
     g.rotation.y = offices ? -0.1 : -0.55;

@@ -29,9 +29,8 @@ const SERVICES = [
 ];
 
 const PORTS = [
-  ['Karachi', 'Pakistan'], ['Jebel Ali', 'UAE'], ['China', 'All ports'], ['Nhava Sheva', 'India'],
-  ['Mundra', 'India'], ['Colombo', 'Sri Lanka'], ['Haiphong', 'Vietnam'], ['Sokhna', 'Egypt'],
-  ['Port Klang', 'Malaysia'], ['Mombasa', 'Kenya'], ['Chittagong', 'Bangladesh'], ['Bangkok', 'Thailand']
+  ['Karachi', 'Pakistan'], ['Jebel Ali', 'Dubai, UAE'], ['Sohar', 'Oman'], ['Mundra', 'India'], ['Nhava Sheva', 'India'],
+  ['Chittagong', 'Bangladesh'], ['Hamburg', 'Germany'], ['All over Europe', 'Europe'], ['Laem Chabang', 'Thailand'], ['Bangkok', 'Thailand'], ['Haiphong', 'Vietnam']
 ];
 
 const WHY = [
@@ -43,7 +42,7 @@ const WHY = [
 ];
 
 
-const PORT_GEO = { 'Karachi': [24.86, 67.0], 'Jebel Ali': [25.0, 55.06], 'China': [22.5, 114.1], 'Nhava Sheva': [18.95, 72.95], 'Mundra': [22.74, 69.7], 'Colombo': [6.95, 79.85], 'Haiphong': [20.85, 106.7], 'Sokhna': [29.6, 32.35], 'Port Klang': [3.0, 101.4], 'Mombasa': [-4.05, 39.67], 'Chittagong': [22.33, 91.8], 'Bangkok': [13.7, 100.5] };
+const PORT_GEO = { 'Karachi': [24.86, 67.0], 'Jebel Ali': [25.0, 55.06], 'Sohar': [24.37, 56.73], 'Mundra': [22.74, 69.7], 'Nhava Sheva': [18.95, 72.95], 'Chittagong': [22.33, 91.8], 'Hamburg': [53.55, 9.99], 'All over Europe': [47.5, 14.5], 'Laem Chabang': [13.08, 100.88], 'Bangkok': [13.7, 100.5], 'Haiphong': [20.85, 106.7] };
 const PLANNER_DATA = JSON.stringify(PORTS.map(([n, c]) => ({ n, c, la: PORT_GEO[n][0], lo: PORT_GEO[n][1] }))).replace(/"/g, '&quot;');
 const PORT_OPTIONS = PORTS.map(([n, c]) => `<option value="${n}">${n}</option>`).join('') + '<option value="">Other / not listed</option>';
 
@@ -201,12 +200,12 @@ const cta = `<section class="cta2" aria-labelledby="cta-h">
 const portsBlock = (cls = 'sec--navy2') => `<section class="sec ${cls} ports-sec" aria-labelledby="ports-h">
   <div class="wrap pgrid">
     <div class="pgrid__globe">
-      <div class="viewer viewer--globe rv" data-viewer="globe" role="group" aria-label="Interactive 3D globe marking the twelve ports SS Gulf Shipping works. Drag or use the arrow keys to rotate; tap a port to select it."></div>
+      <div class="viewer viewer--globe rv" data-viewer="globe" role="group" aria-label="Interactive 3D globe marking the ports and regions SS Gulf Shipping works. Drag or use the arrow keys to rotate; tap a port to select it."></div>
     </div>
     <div class="pgrid__ui">
       <span class="eyebrow rv">Where we work</span>
       <h2 id="ports-h" class="display h2 rv" style="margin:18px 0 14px;max-width:none">Our currently working ports</h2>
-      <p class="lead rv">Twelve ports across the Gulf, the Indian subcontinent, South-East Asia, Africa and China.</p>
+      <p class="lead rv">Ports across the Gulf, the Indian subcontinent, South-East Asia and all over Europe.</p>
       <form class="planner rv" id="planner" data-ports="${PLANNER_DATA}" onsubmit="return false" aria-labelledby="pl-h">
         <span class="eyebrow">Plan your shipment</span>
         <h3 id="pl-h" class="display">Pick a route</h3>
@@ -229,7 +228,7 @@ const portsBlock = (cls = 'sec--navy2') => `<section class="sec ${cls} ports-sec
         <p class="pl-note">Tip: tap a port on the globe or in the list below to set your destination. The route is illustrative; we confirm routing, schedules and rates with you directly.</p>
       </form>
       <ul class="ports ports--chips">
-        ${PORTS.map(([n, c], i) => `<li class="rv" style="--d:${(i % 6) * 0.05}s"><span>${String(i + 1).padStart(2, '0')}</span><b>${n}</b><small>${c}</small></li>`).join('\n        ')}
+        ${PORTS.filter(([n]) => n !== 'Karachi').map(([n, c], i) => `<li class="rv" style="--d:${(i % 6) * 0.05}s"><span>${String(i + 1).padStart(2, '0')}</span><b>${n}</b><small>${c}</small></li>`).join('\n        ')}
       </ul>
     </div>
   </div>
@@ -294,7 +293,7 @@ page({
           <div class="bt__row"><ul class="ticks ticks--light"><li>${ic('check')}Affordable pricing</li><li>${ic('check')}On-time deliveries</li></ul><a class="btn btn--primary" href="about.html">Read more ${ic('arrow')}</a></div>
         </div>
       </article>
-      <div class="bt bt--stat bt--orange rv" style="--d:.06s"><b><span data-count="12">12</span></b><span>Working ports</span></div>
+      <div class="bt bt--stat bt--orange rv" style="--d:.06s"><b><span data-count="10">10</span></b><span>Ports &amp; regions served</span></div>
       <div class="bt bt--stat bt--navy rv" style="--d:.12s"><b><span data-count="2">2</span><sup>+</sup></b><span>Years of experience</span></div>
       <div class="bt bt--stat bt--w6 bt--line rv" style="--d:.18s"><b><span data-count="2">2</span></b><span>Offices: Karachi &amp; Lisbon</span></div>
       <div class="bt bt--stat bt--w6 bt--ink rv" style="--d:.24s"><b><span data-count="4">4</span></b><span>Core services</span></div>
@@ -420,7 +419,7 @@ ${cta}`
 page({
   file: 'services.html', three: true, viewers: true,
   title: 'Our services — SS Gulf Shipping',
-  desc: 'Freight forwarding (FCL and LCL), NVOCC, trucking and container trading, plus the twelve ports SS Gulf Shipping currently works.',
+  desc: 'Freight forwarding (FCL and LCL), NVOCC, trucking and container trading, plus the ports and regions SS Gulf Shipping currently works, from the Gulf and India to South-East Asia and Europe.',
   body: `
 ${pageHero({ img: 'docks.webp', h1: 'Our services', crumb: 'Services', view: 'crane', tod: 0.05 })}
 <nav class="subnav" aria-label="Jump to a section"><div class="wrap"><a href="#freight-forwarding">Freight forwarding</a><a href="#nvocc">NVOCC</a><a href="#trucking">Trucking</a><a href="#container-trading">Container trading</a><a href="#configurator">Container builder</a><a href="#ports-h">Ports &amp; planner</a></div></nav>
