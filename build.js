@@ -158,7 +158,7 @@ function footer() {
 </html>`;
 }
 
-function page({ file, title, desc, body, inner = true, jsonld, three = false, viewers = false }) {
+function page({ file, title, desc, body, inner = true, jsonld, three = false, viewers = false, port3d = true }) {
   let html = `${head({ title, desc, jsonld, three })}
 <body${inner ? ' class="page-inner"' : ''}>
 ${header(file, inner)}
@@ -166,7 +166,7 @@ ${header(file, inner)}
 ${body}
 </main>
 ${footer()}`;
-  if (three) html = html.replace('</body>', `<script type="module">\n${PORT3D}\n</script>\n</body>`);
+  if (three && port3d) html = html.replace('</body>', `<script type="module">\n${PORT3D}\n</script>\n</body>`);
   if (viewers) html = html.replace('</body>', `<script type="module">\n${VIEWERS3D}\n</script>\n</body>`);
   fs.writeFileSync(path.join(__dirname, file), html);
   console.log('wrote', file, (html.length / 1024).toFixed(1) + ' KB');
@@ -241,7 +241,7 @@ const chapters = [
 ];
 
 page({
-  file: 'index.html', inner: false, three: true, viewers: true,
+  file: 'index.html', inner: true, three: true, port3d: false, viewers: true,
   title: 'SS Gulf Shipping — Moving your cargo with confidence',
   desc: 'Freight forwarding, NVOCC, trucking and container trading from Karachi, Lisbon and Dubai. Efficient cargo handling, transparent operations and on-time delivery.',
   jsonld: JSON.stringify({
@@ -250,37 +250,43 @@ page({
     address: [{ '@type': 'PostalAddress', addressLocality: 'Karachi', addressCountry: 'PK' }, { '@type': 'PostalAddress', addressLocality: 'Lisbon', addressCountry: 'PT' }, { '@type': 'PostalAddress', addressLocality: 'Dubai', addressCountry: 'AE' }]
   }),
   body: `
-<section class="track" data-story aria-label="Our services, scroll to explore">
-  <div class="scene">
-    <img class="layer layer--0" src="assets/img/hero.jpg" alt="Container port at dusk with gantry cranes, stacked containers and a yellow terminal truck" fetchpriority="high" decoding="async">
-    <img class="layer" src="assets/img/loading.jpg" alt="" decoding="async" fetchpriority="low" style="opacity:0">
-    <img class="layer" src="assets/img/night.webp" alt="" decoding="async" fetchpriority="low" style="opacity:0">
-    <img class="layer" src="assets/img/truck.jpg" alt="" decoding="async" fetchpriority="low" style="opacity:0">
-    <img class="layer" src="assets/img/containers.jpg" alt="" decoding="async" fetchpriority="low" style="opacity:0">
-    <div class="shade"></div>
-    <div class="stage">
-      <div class="wrap">
-        <div class="hero-copy">
-          <span class="eyebrow">Karachi &nbsp;·&nbsp; Lisbon &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Global freight</span>
-          <h1 class="display">Moving your cargo with <em>confidence.</em></h1>
-          <p class="lead">Reliable freight forwarding and logistics across regional and international markets. Efficient cargo handling, transparent operations and on-time delivery from origin to destination.</p>
-          <div class="actions">
-            <a class="btn btn--primary" href="contact.html">Get a quote ${ic('arrow')}</a>
-            <a class="callchip" href="tel:${PHONE_PT.tel}"><i>${ic('phone')}</i><span>Call us any time<b>${PHONE_PT.show}</b></span></a>
-          </div>
-        </div>
-        ${chapters.map(([n, s]) => `<div class="chap">
-          <span class="chap__n" aria-hidden="true">${n}</span>
-          <h2 class="display">${s.title}</h2>
-          <p>${s.text}</p>
-          <a class="link" href="services.html#${s.id}">Learn more ${ic('arrow')}</a>
-        </div>`).join('\n        ')}
+<section class="kv" id="kv" aria-label="Our services, scroll to explore">
+  <div class="kv__scene" id="kv-scene">
+    <video class="kv__video" id="kv-vid" muted playsinline preload="auto" aria-hidden="true" tabindex="-1" disablepictureinpicture poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/2307e4bf-be39-42b4-b579-e168aeccabf0.jpg"></video>
+    <p class="kv__giant" id="kv-giant" aria-hidden="true">Our services</p>
+    <div class="kv__copy" id="kv-copy">
+      <span class="eyebrow">Karachi &nbsp;·&nbsp; Lisbon &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Global freight</span>
+      <h1 class="display">Moving your cargo with <em>confidence.</em></h1>
+      <div class="actions">
+        <a class="btn btn--primary" href="contact.html">Get a quote ${ic('arrow')}</a>
+        <a class="callchip" href="tel:${PHONE_PT.tel}"><i>${ic('phone')}</i><span>Call us any time<b>${PHONE_PT.show}</b></span></a>
       </div>
     </div>
-    <div class="rail" role="group" aria-label="Jump to a chapter"><button type="button" class="rb on" data-l="Intro" aria-label="Intro"></button><button type="button" class="rb" data-l="Freight forwarding" aria-label="Freight forwarding"></button><button type="button" class="rb" data-l="NVOCC" aria-label="NVOCC"></button><button type="button" class="rb" data-l="Trucking" aria-label="Trucking"></button><button type="button" class="rb" data-l="Container trading" aria-label="Container trading"></button><b aria-hidden="true"></b></div>
-    <div class="cue" aria-hidden="true">Scroll</div>
+    <div class="kv__speed" id="kv-speed" aria-hidden="true">00 KM/H</div>
+    <div class="kv__band" id="kv-band">
+      <div class="kv__strip" id="kv-strip">
+        <div class="kv__lead">
+          <h2 class="display">Everything your<br>cargo needs.<em>Under one roof.</em></h2>
+          <div class="kv__txt">
+            <p>From freight forwarding and NVOCC to trucking and container trading, we cover every stage of your shipment.</p>
+            <p>One team across Karachi, Lisbon and Dubai means one point of contact and clear communication from origin to destination.</p>
+          </div>
+        </div>
+        <ul class="kv__cards" id="kv-cards">
+          ${SERVICES.map((s) => `<li class="kv__card">
+            ${ic(s.icon)}
+            <h3 class="display kv__rev">${s.short.replace(/ /g, '<br>')}</h3>
+            <p class="kv__rev">${s.text}</p>
+            <a class="kv__more" href="services.html#${s.id}">Learn more ${ic('arrow')}</a>
+          </li>`).join('\n          ')}
+        </ul>
+      </div>
+      <a class="kv__pill" href="services.html" tabindex="-1">Our services</a>
+    </div>
   </div>
 </section>
+<script src="assets/js/kvhero.js" defer></script>
+
 
 <section class="sec sec--paper" aria-labelledby="about-h">
   <div class="wrap">
